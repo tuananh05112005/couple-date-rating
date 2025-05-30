@@ -1,0 +1,16 @@
+[build]
+  functions = "netlify/functions"
+  publish = "src"  # Đường dẫn thư mục chứa index.html của bạn
+
+[[redirects]]
+  from = "/api/ratings"
+  to = "/.netlify/functions/postRating"
+  method = "POST"
+  status = 200
+
+[[redirects]]
+  from = "/api/ratings"
+  to = "/.netlify/functions/getRatings"
+  method = "GET"
+  status = 200
+
