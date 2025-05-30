@@ -11,7 +11,8 @@
   "description": "## Overview The Couple Date Rating App is a web application designed for couples to rate their dates and share their experiences. Users can provide feedback on their date through a rating system, share their feelings, and upload photos to create lasting memories. The app features a love meter that visually represents the couple's rating and statistics about their dating history.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
