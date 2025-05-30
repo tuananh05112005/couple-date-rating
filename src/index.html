@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Couple Date Rating 💖</title>
+  <link rel="stylesheet" href="styles/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="floating-hearts" id="floatingHearts"></div>
+  
+  <h1 style="font-family: 'Pacifico', cursive; color: #ff69b4;">💑 Rate Our Date!</h1>
+  
+  <div class="container">
+    <textarea id="feelings" placeholder="How was your date today? Share your thoughts! 😍✨"></textarea>
+    
+    <div class="rating" id="rating">
+      <span class="emoji" data-rating="1">😐</span>
+      <span class="emoji" data-rating="2">😊</span>
+      <span class="emoji" data-rating="3">🥰</span>
+      <span class="emoji" data-rating="4">😍</span>
+      <span class="emoji" data-rating="5">💖</span>
+    </div>
+
+    <div class="love-meter">
+      <div class="meter-bar">
+        <div class="meter-fill" id="meterFill" style="width: 0%;"></div>
+      </div>
+      <p style="margin-top: 10px; color: #ff69b4; font-family: 'Pacifico', cursive;">Love Meter 💕</p>
+    </div>
+    
+    <div class="message" id="message"></div>
+    
+    <div class="photo-section">
+      <button class="photo-btn" onclick="document.getElementById('photoUpload').click()">
+        📸 Add a Memory Photo
+      </button>
+      <input type="file" id="photoUpload" class="photo-upload" accept="image/*">
+      <div id="photoPreview"></div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-number" id="totalDates">1</div>
+        <div class="stat-label">Dates</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="totalRatings">0</div>
+        <div class="stat-label">Ratings</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="avgRating">0</div>
+        <div class="stat-label">Avg Rating</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="loveScore">100</div>
+        <div class="stat-label">% Love</div>
+      </div>
+    </div>
+
+    <div class="memory-section" id="memorySection" style="display: none;">
+      <h3 style="color: #ff69b4; font-family: 'Pacifico', cursive; text-align: center; margin-bottom: 15px;">💝 Our Memories</h3>
+      <div id="memories"></div>
+    </div>
+  </div>
+
+  <script src="scripts/app.js"></script>
+</body>
+</html>
