@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:4000'; // Đổi sang domain backend khi deploy
+const API_URL = 'https://couple-date-rating-1.onrender.com'; // Đổi sang domain backend khi deploy
 
 const emojis = document.querySelectorAll('.emoji');
 const message = document.getElementById('message');
