@@ -14,11 +14,11 @@ app.use(cors({
 
 app.use(bodyParser.json());
 
-// ✅ Phục vụ file tĩnh từ thư mục 'public'
+// Phục vụ file tĩnh (index.html, script.js...) từ thư mục 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Nếu là SPA (single page app), serve index.html cho mọi route
-app.get('*', (req, res) => {
+// Nếu người dùng vào route không xác định (SPA support), thì trả về index.html
+app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
