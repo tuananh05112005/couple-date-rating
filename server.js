@@ -25,7 +25,7 @@ db.connect((err) => {
 // API: Lưu đánh giá
 app.post('/api/ratings', (req, res) => {
   const { rating, feeling, photo } = req.body;
-  const sql = 'INSERT INTO ratings (rating, feeling, photo) VALUES (?, ?, ?)';
+  const sql = 'INSERT INTO couple_rating (rating, feeling, photo) VALUES (?, ?, ?)';
   db.query(sql, [rating, feeling, photo], (err, result) => {
     if (err) {
       console.error(err);
@@ -38,7 +38,7 @@ app.post('/api/ratings', (req, res) => {
 
 // API: Lấy tất cả đánh giá
 app.get('/api/ratings', (req, res) => {
-  db.query('SELECT * FROM ratings ORDER BY created_at DESC', (err, results) => {
+  db.query('SELECT * FROM couple_rating  ORDER BY created_at DESC', (err, results) => {
     if (err) throw err;
     res.json(results);
   });
