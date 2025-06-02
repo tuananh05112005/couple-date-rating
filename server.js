@@ -2,18 +2,25 @@ const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path'); // 👈 thêm path để xử lý đường dẫn
 const app = express();
 
-// CORS cấu hình cụ thể cho Netlify
+// Cho phép frontend Netlify gọi API
 app.use(cors({
   origin: 'https://elaborate-bunny-0b0d090.netlify.app',
   methods: ['GET', 'POST'],
   credentials: true
 }));
-app.options('*', cors());
 
 app.use(bodyParser.json());
-app.use(express.static('src'));
+
+// ✅ Phục vụ file tĩnh từ thư mục 'public'
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Nếu là SPA (single page app), serve index.html cho mọi route
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -28,6 +35,7 @@ db.connect((err) => {
   console.log('✅ Đã kết nối MySQL!');
 });
 
+// API endpoints
 app.post('/api/ratings', (req, res) => {
   const { rating, feeling, photo } = req.body;
   const sql = 'INSERT INTO couple_rating (rating, feeling, photo) VALUES (?, ?, ?)';
@@ -48,7 +56,7 @@ app.get('/api/ratings', (req, res) => {
   });
 });
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`🚀 Server đang chạy tại http://localhost:${PORT}`);
 });
