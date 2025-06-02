@@ -4,9 +4,16 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 
-app.use(cors());
+// CORS cấu hình cụ thể cho Netlify
+app.use(cors({
+  origin: 'https://elaborate-bunny-0b0d090.netlify.app',
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
+app.options('*', cors());
+
 app.use(bodyParser.json());
-app.use(express.static('src')); // phục vụ index.html và tệp tĩnh
+app.use(express.static('src'));
 
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -16,13 +23,11 @@ const db = mysql.createConnection({
   port: process.env.DB_PORT || 3306
 });
 
-
 db.connect((err) => {
   if (err) throw err;
   console.log('✅ Đã kết nối MySQL!');
 });
 
-// API: Lưu đánh giá
 app.post('/api/ratings', (req, res) => {
   const { rating, feeling, photo } = req.body;
   const sql = 'INSERT INTO couple_rating (rating, feeling, photo) VALUES (?, ?, ?)';
@@ -36,9 +41,8 @@ app.post('/api/ratings', (req, res) => {
   });
 });
 
-// API: Lấy tất cả đánh giá
 app.get('/api/ratings', (req, res) => {
-  db.query('SELECT * FROM couple_rating  ORDER BY created_at DESC', (err, results) => {
+  db.query('SELECT * FROM couple_rating ORDER BY created_at DESC', (err, results) => {
     if (err) throw err;
     res.json(results);
   });
