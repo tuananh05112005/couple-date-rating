@@ -2,25 +2,11 @@ const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const path = require('path'); // 👈 thêm path để xử lý đường dẫn
 const app = express();
 
-// Cho phép frontend Netlify gọi API
-app.use(cors({
-  origin: 'https://elaborate-bunny-0b0d090.netlify.app',
-  methods: ['GET', 'POST'],
-  credentials: true
-}));
-
+app.use(cors());
 app.use(bodyParser.json());
-
-// Phục vụ file tĩnh (index.html, script.js...) từ thư mục 'public'
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Nếu người dùng vào route không xác định (SPA support), thì trả về index.html
-app.get('/.*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+app.use(express.static('src')); // phục vụ index.html và tệp tĩnh
 
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -30,12 +16,13 @@ const db = mysql.createConnection({
   port: process.env.DB_PORT || 3306
 });
 
+
 db.connect((err) => {
   if (err) throw err;
   console.log('✅ Đã kết nối MySQL!');
 });
 
-// API endpoints
+// API: Lưu đánh giá
 app.post('/api/ratings', (req, res) => {
   const { rating, feeling, photo } = req.body;
   const sql = 'INSERT INTO couple_rating (rating, feeling, photo) VALUES (?, ?, ?)';
@@ -49,6 +36,7 @@ app.post('/api/ratings', (req, res) => {
   });
 });
 
+// API: Lấy tất cả đánh giá
 app.get('/api/ratings', (req, res) => {
   db.query('SELECT * FROM couple_rating ORDER BY created_at DESC', (err, results) => {
     if (err) throw err;
@@ -56,7 +44,7 @@ app.get('/api/ratings', (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 4000;
+const PORT = 4000;
 app.listen(PORT, () => {
   console.log(`🚀 Server đang chạy tại http://localhost:${PORT}`);
 });
