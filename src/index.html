@@ -1,19 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Couple Date Rating 💖</title>
-  <link rel="stylesheet" href="styles/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>Chuyện đi date 💖</title>
+  <link rel="stylesheet" href="styles/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+  <p> chỉ chính chủ mới được vào nèe <a href="admin.html">🔒 Vào trang Admin</a></p>
+
+
 </head>
+
 <body>
   <div class="floating-hearts" id="floatingHearts"></div>
-  
-  <h1 style="font-family: 'Pacifico', cursive; color: #ff69b4;">💑 Rate Our Date!</h1>
-  
+
+  <h1 style="
+        font-family: 'Pacifico', cursive;
+        color: #ff69b4;
+        text-align: center;
+      ">
+    💑 2 con người dưỡng thê nìiii
+  </h1>
+
   <div class="container">
-    <textarea id="feelings" placeholder="How was your date today? Share your thoughts! 😍✨"></textarea>
-    
+    <textarea id="feelings" placeholder="Hãy nêu cảm nhận buổi hẹn hò của anh và em nhée, đừng ngại ngùng hãy gửi những lời nhắn đó và anh sẽ tiếp thu thêm cho lần sau nèeee 😍✨"></textarea>
+
     <div class="rating" id="rating">
       <span class="emoji" data-rating="1">😐</span>
       <span class="emoji" data-rating="2">😊</span>
@@ -24,19 +35,31 @@
 
     <div class="love-meter">
       <div class="meter-bar">
-        <div class="meter-fill" id="meterFill" style="width: 0%;"></div>
+        <div class="meter-fill" id="meterFill" style="width: 0%"></div>
       </div>
-      <p style="margin-top: 10px; color: #ff69b4; font-family: 'Pacifico', cursive;">Love Meter 💕</p>
+      <p style="
+            margin-top: 10px;
+            color: #ff69b4;
+            font-family: 'Pacifico', cursive;
+          ">
+        Love Meter 💕
+      </p>
     </div>
-    
+
     <div class="message" id="message"></div>
-    
+
     <div class="photo-section">
-      <button class="photo-btn" onclick="document.getElementById('photoUpload').click()">
-        📸 Add a Memory Photo
+      <button class="cute-btn" onclick="document.getElementById('photoUpload').click()">
+        📸 Thêm tấm ảnh để đánh dấu kỉ niệm nháaa 
       </button>
-      <input type="file" id="photoUpload" class="photo-upload" accept="image/*">
-      <div id="photoPreview"></div>
+      <input type="file" id="photoUpload" class="photo-upload" accept="image/*" style="display: none" />
+      <div id="photoPreview" class="photo-preview"></div>
+      <button class="cute-btn" onclick="removePhoto()">🗑️ Xóa ảnh</button>
+    </div>
+
+    <div class="form-actions" style="text-align: center">
+     <button class="cute-btn" onclick="submitRating()">🌟 Gửi Đánh Giá</button>
+      <button class="cute-btn" onclick="clearForm()">❌ Xóa</button>
     </div>
 
     <div class="stats">
@@ -58,12 +81,111 @@
       </div>
     </div>
 
-    <div class="memory-section" id="memorySection" style="display: none;">
-      <h3 style="color: #ff69b4; font-family: 'Pacifico', cursive; text-align: center; margin-bottom: 15px;">💝 Our Memories</h3>
+    <div class="memory-section" id="memorySection" style="display: none">
+      <h3 style="
+            color: #ff69b4;
+            font-family: 'Pacifico', cursive;
+            text-align: center;
+            margin-bottom: 15px;
+          ">
+        💝 
+      </h3>
       <div id="memories"></div>
     </div>
   </div>
 
   <script src="scripts/app.js"></script>
+  <script>
+    // const API_URL = "https://couple-date-rating-2.onrender.com";
+  //   setTimeout(() => {
+  //   window.location.href = 'admin.html';
+  // }, 3000); // 3 giây sau sẽ chuyển
+    function submitRating() {
+      const emoji = document.querySelector(".emoji.selected");
+      const rating = emoji ? parseInt(emoji.getAttribute("data-rating")) : 0;
+      const feeling = document.getElementById("feelings").value;
+      const photoInput = document.getElementById("photoUpload");
+      const file = photoInput.files[0];
+
+      if (!rating || !feeling.trim()) {
+        alert("Vui lòng chọn rating và nhập cảm nghĩ nhé! 💬");
+        return;
+      }
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          sendRating(rating, feeling, e.target.result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        sendRating(rating, feeling, null);
+      }
+    }
+
+    function clearForm() {
+      document.getElementById("feelings").value = "";
+      document.getElementById("photoUpload").value = "";
+      document.getElementById("photoPreview").innerHTML = "";
+      document
+        .querySelectorAll(".emoji")
+        .forEach((e) => e.classList.remove("selected"));
+      document.getElementById("meterFill").style.width = "0%";
+      document.getElementById("message").textContent = "";
+    }
+
+    function removePhoto() {
+      document.getElementById("photoUpload").value = "";
+      document.getElementById("photoPreview").innerHTML = "";
+    }
+    function deleteMemory(id) {
+      // Xóa trên server
+      fetch(`${API_URL}/api/ratings/${id}`, { method: "DELETE" })
+        .then((res) => res.json())
+        .then(() => {
+          // Xóa khỏi localStorage
+          const memories = JSON.parse(
+            localStorage.getItem("dateMemories") || "[]"
+          );
+          const updated = memories.filter((m) => m.id !== id);
+          localStorage.setItem("dateMemories", JSON.stringify(updated));
+          displayMemories();
+        })
+        .catch((err) => alert("Lỗi khi xóa đánh giá!"));
+    }
+
+    function displayMemories() {
+      const savedMemories = JSON.parse(
+        localStorage.getItem("dateMemories") || "[]"
+      );
+      const memoriesDiv = document.getElementById("memories");
+      memoriesDiv.innerHTML = "";
+      savedMemories.slice(0, 3).forEach((memory) => {
+        const div = document.createElement("div");
+        div.className = "memory-item";
+        div.innerHTML = `
+          <button class="delete-memory-btn" onclick="deleteMemory(${memory.id
+          })">×</button>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-weight: bold; color: #ff4081;">${memory.date
+          }</span>
+            <span>${"⭐".repeat(memory.rating)}</span>
+          </div>
+          ${memory.photo
+            ? `<img src="${memory.photo}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;">`
+            : ""
+          }
+          <p style="margin: 0; font-style: italic; color: #666;">"${memory.feeling
+          }"</p>
+        `;
+        memoriesDiv.appendChild(div);
+      });
+      document.getElementById("memorySection").style.display =
+        savedMemories.length > 0 ? "block" : "none";
+    }
+
+    displayMemories();
+  </script>
 </body>
+
 </html>

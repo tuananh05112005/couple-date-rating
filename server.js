@@ -3,9 +3,12 @@ const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
+require('dotenv').config();
+
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '10mb' }));
+
 app.use(express.static('src')); // phục vụ index.html và tệp tĩnh
 
 const db = mysql.createConnection({
@@ -43,6 +46,18 @@ app.get('/api/ratings', (req, res) => {
     res.json(results);
   });
 });
+
+app.delete('/api/ratings/:id', (req, res) => {
+  const sql = 'DELETE FROM couple_rating WHERE id = ?';
+  db.query(sql, [req.params.id], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Lỗi khi xóa đánh giá' });
+    }
+    res.json({ message: 'Đánh giá đã được xóa!' });
+  });
+});
+
 
 const PORT = 4000;
 app.listen(PORT, () => {

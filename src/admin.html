@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin - Đánh Giá Tình Yêu 💌</title>
+    <link rel="stylesheet" href="styles/style.css" />
+    <a href="index.html">về trang đánh giá</a>
+    <style>
+      .delete-btn {
+        background-color: #ff4081;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 5px 10px;
+        margin-top: 10px;
+        cursor: pointer;
+      }
+      .delete-btn:hover {
+        background-color: #e60073;
+      }
+      .bulk-delete-btn {
+        background-color: #ff1744;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 8px 16px;
+        margin: 20px auto;
+        display: block;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .bulk-delete-btn:hover {
+        background-color: #c4001d;
+      }
+      .checkbox {
+        margin-right: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 style="text-align: center; color: #ff4081">📊 Quản lý đánh giá</h1>
+    <div id="ratingList" class="container"></div>
+
+    <button class="bulk-delete-btn" onclick="deleteSelectedRatings()">🗑️ Xoá các đánh giá đã chọn</button>
+
+    <script>
+      const API_URL = "http://localhost:4000";
+        const correctPassword = "05112005";
+  const userInput = prompt("Vui lòng nhập mật khẩu để vào trang admin:");
+  alert("Chào mừng bạn đến với trang quản lý đánh giá! 💖");
+  if (userInput !== correctPassword) {
+    alert("Bạn không có quyền truy cập!");
+    alert("Bạn sẽ được chuyển về trang chính.");
+    window.location.href = "index.html";
+  }
+
+
+      function fetchRatings() {
+        fetch(`${API_URL}/api/ratings`)
+          .then((res) => res.json())
+          .then((data) => {
+            const list = document.getElementById("ratingList");
+            list.innerHTML = data
+              .map((item) => {
+                const safePhoto =
+                  item.photo && item.photo.startsWith("data:image/")
+                    ? item.photo
+                    : null;
+                    
+                return `
+                
+          <div class="memory-item" style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+            <input type="checkbox" class="checkbox" data-id="${item.id}">
+            <strong>⭐ ${item.rating}</strong> – ${new Date().toLocaleString('vi-VN')}<br>
+            <em>${item.feeling}</em><br>
+            ${
+              safePhoto
+                ? `<img src="${safePhoto}" style="max-width: 200px; margin-top: 10px;" alt="Photo"><br>`
+                : '<span style="color: gray;">(Không có ảnh)</span><br>'
+            }
+            <button class="delete-btn" onclick="deleteRating(${item.id})">🗑️ Xóa đánh giá</button>
+          </div>
+        `;
+              })
+              .join("");
+          })
+          .catch((err) => {
+            document.getElementById("ratingList").textContent =
+              "Lỗi tải đánh giá.";
+            console.error(err);
+          });
+      }
+
+      function deleteRating(id) {
+        if (confirm("Bạn có chắc muốn xoá đánh giá này không?")) {
+          fetch(`${API_URL}/api/ratings/${id}`, {
+            method: "DELETE",
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              alert(data.message || "Đã xóa đánh giá.");
+              fetchRatings();
+            })
+            .catch((err) => {
+              alert("Lỗi khi xoá đánh giá.");
+              console.error(err);
+            });
+        }
+      }
+
+      function deleteSelectedRatings() {
+        const checkboxes = document.querySelectorAll('.checkbox:checked');
+        if (checkboxes.length === 0) {
+          alert("Vui lòng chọn ít nhất một đánh giá để xoá.");
+          return;
+        }
+
+        if (!confirm(`Bạn có chắc muốn xoá ${checkboxes.length} đánh giá đã chọn không?`)) return;
+
+        const ids = Array.from(checkboxes).map(cb => cb.dataset.id);
+
+        // Xoá từng đánh giá tuần tự (hoặc có thể dùng Promise.all để xoá song song)
+        Promise.all(
+          ids.map(id =>
+            fetch(`${API_URL}/api/ratings/${id}`, {
+              method: "DELETE",
+            }).then(res => res.json())
+          )
+        )
+          .then(() => {
+            alert(`Đã xoá ${ids.length} đánh giá.`);
+            fetchRatings();
+          })
+          .catch((err) => {
+            alert("Có lỗi xảy ra khi xoá đánh giá.");
+            console.error(err);
+          });
+      }
+
+      fetchRatings();
+    </script>
+  </body>
+</html>

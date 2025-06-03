@@ -1,5 +1,5 @@
 body {
-  font-family: 'Pacifico', cursive;
+  font-family: "Pacifico", cursive;
   background: linear-gradient(45deg, #ffe4ec, #ffeef4, #fff0f5);
   animation: gradientShift 8s ease infinite;
   display: flex;
@@ -12,9 +12,15 @@ body {
   overflow-x: hidden;
 }
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 h1 {
@@ -26,8 +32,13 @@ h1 {
 }
 
 @keyframes titlePulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 .container {
@@ -99,17 +110,17 @@ textarea:focus {
 }
 
 @keyframes floatUp {
-  0% { 
-    transform: scale(0.5) translateY(0px); 
-    opacity: 1; 
+  0% {
+    transform: scale(0.5) translateY(0px);
+    opacity: 1;
   }
-  50% { 
-    transform: scale(1.2) translateY(-50px); 
-    opacity: 0.8; 
+  50% {
+    transform: scale(1.2) translateY(-50px);
+    opacity: 0.8;
   }
-  100% { 
-    transform: scale(0.8) translateY(-120px); 
-    opacity: 0; 
+  100% {
+    transform: scale(0.8) translateY(-120px);
+    opacity: 0;
   }
 }
 
@@ -127,8 +138,14 @@ textarea:focus {
 }
 
 @keyframes messageAppear {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .photo-section {
@@ -185,8 +202,14 @@ textarea:focus {
 }
 
 @keyframes slideIn {
-  0% { opacity: 0; transform: translateX(-20px); }
-  100% { opacity: 1; transform: translateX(0); }
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .floating-hearts {
@@ -273,10 +296,51 @@ textarea:focus {
 }
 
 .meter-fill::after {
-  content: '💖';
+  content: "💖";
   position: absolute;
   right: 5px;
   top: 50%;
   transform: translateY(-50%);
   font-size: 14px;
+}
+.cute-btn {
+  background-color: #ff69b4;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: "Pacifico", cursive;
+  margin: 10px 5px;
+  transition: background 0.3s ease;
+}
+
+.cute-btn:hover {
+  background-color: #ff1493;
+}
+
+.photo-preview img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.memory-item {
+  position: relative;
+}
+
+.delete-memory-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(255, 105, 180, 0.8);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  width: 25px;
+  height: 25px;
+  font-size: 16px;
+  line-height: 25px;
+  text-align: center;
+  cursor: pointer;
 }
