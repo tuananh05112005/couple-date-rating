@@ -6,7 +6,7 @@
   <title>Chuyện đi date 💖</title>
   <link rel="stylesheet" href="styles/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
-  <p> chỉ chính chủ mới được vào nèe <a href="admin.html">🔒 Vào trang Admin</a></p>
+  <p> chỉ chính chủ mới được vào nèe <a href="admin.html">🔒 </a></p>
 
 
 </head>
@@ -42,7 +42,7 @@
             color: #ff69b4;
             font-family: 'Pacifico', cursive;
           ">
-        Love Meter 💕
+        Thước đo tềnh iuuu 💕
       </p>
     </div>
 
@@ -88,7 +88,7 @@
             text-align: center;
             margin-bottom: 15px;
           ">
-        💝 
+        💝 Our Memories
       </h3>
       <div id="memories"></div>
     </div>
@@ -183,9 +183,25 @@
       document.getElementById("memorySection").style.display =
         savedMemories.length > 0 ? "block" : "none";
     }
+      // Xem ảnh khi click
+  document.addEventListener("click", function (e) {
+    if (e.target.matches(".memory-item img")) {
+      const src = e.target.getAttribute("src");
+      document.getElementById("modalImage").setAttribute("src", src);
+      document.getElementById("imageModal").style.display = "flex";
+    } else if (e.target.id === "imageModal") {
+      document.getElementById("imageModal").style.display = "none";
+    }
+  });
+
 
     displayMemories();
   </script>
+  <!-- Modal hiển thị ảnh -->
+<div id="imageModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); justify-content: center; align-items: center;">
+  <img id="modalImage" style="max-width: 90%; max-height: 90%; border-radius: 10px; box-shadow: 0 0 20px #fff;" />
+</div>
+
 </body>
 
 </html>
