@@ -4,8 +4,69 @@
     <meta charset="UTF-8" />
     <title>Admin - Đánh Giá Tình Yêu 💌</title>
     <link rel="stylesheet" href="styles/style.css" />
-    <a href="index.html">về trang đánh giá</a>
     <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #fff8fb;
+        margin: 0;
+        padding: 0;
+      }
+
+      h1 {
+        text-align: center;
+        color: #ff4081;
+        padding: 20px 0 10px;
+        font-size: 32px;
+      }
+
+      a {
+        display: block;
+        text-align: center;
+        margin-bottom: 10px;
+        color: #ff4081;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      #sortControls {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      select {
+        padding: 6px 12px;
+        border-radius: 8px;
+        border: 1px solid #ffb6c1;
+        background-color: #fff0f5;
+        font-size: 14px;
+        margin: 0 8px;
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        padding: 0 20px 40px;
+      }
+
+      .memory-item {
+        background: #fff0f5;
+        border-radius: 12px;
+        box-shadow: 0 0 10px #ffd6e8;
+        padding: 15px;
+        transition: transform 0.3s ease;
+        position: relative;
+      }
+
+      .memory-item:hover {
+        transform: scale(1.02);
+      }
+
+      .checkbox {
+        transform: scale(1.2);
+        margin-right: 6px;
+      }
+
       .delete-btn {
         background-color: #ff4081;
         color: white;
@@ -14,49 +75,121 @@
         padding: 5px 10px;
         margin-top: 10px;
         cursor: pointer;
+        width: 100%;
       }
+
       .delete-btn:hover {
         background-color: #e60073;
       }
+
       .bulk-delete-btn {
         background-color: #ff1744;
         color: white;
         border: none;
         border-radius: 12px;
-        padding: 8px 16px;
-        margin: 20px auto;
+        padding: 10px 20px;
+        margin: 20px auto 40px;
         display: block;
         font-size: 16px;
         cursor: pointer;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
       }
+
       .bulk-delete-btn:hover {
         background-color: #c4001d;
       }
-      .checkbox {
-        margin-right: 8px;
+
+      img {
+        width: 100%;
+        max-width: 160px;
+        height: auto;
+        border-radius: 10px;
+        margin-top: 10px;
+        object-fit: cover;
+        display: block;
+      }
+      .grid-view .memory-item {
+        display: block;
+      }
+
+      .list-view .memory-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+      }
+
+      .list-view .memory-item img {
+        max-width: 120px;
+        height: auto;
+      }
+
+      .list-view .memory-item button {
+        margin-top: auto;
       }
     </style>
   </head>
   <body>
-    <h1 style="text-align: center; color: #ff4081">📊 Quản lý đánh giá</h1>
-    <div id="ratingList" class="container"></div>
+    <h1>📊 Quản lý đánh giá</h1>
+    <a href="index.html">← Về trang đánh giá</a>
 
-    <button class="bulk-delete-btn" onclick="deleteSelectedRatings()">🗑️ Xoá các đánh giá đã chọn</button>
+    <div id="sortControls">
+      <label for="sortSelect">Sắp xếp thời gian:</label>
+      <select id="sortSelect" onchange="fetchRatings()">
+        <option value="desc">Mới nhất</option>
+        <option value="asc">Cũ nhất</option>
+      </select>
+      <label for="starFilter">Lọc theo sao:</label>
+      <select id="starFilter" onchange="fetchRatings()">
+        <option value="">Tất cả</option>
+        <option value="5">⭐ 5</option>
+        <option value="4">⭐ 4</option>
+        <option value="3">⭐ 3</option>
+        <option value="2">⭐ 2</option>
+        <option value="1">⭐ 1</option>
+      </select>
+      <label>
+        <input type="checkbox" id="favoriteFilter" onchange="fetchRatings()" />
+        Chỉ hiển thị yêu thích 💖
+      </label>
+      <button id="toggleViewBtn" onclick="toggleViewMode()">
+        🔁 Tùy chỉnh giao diện
+      </button>
+    </div>
+
+    <div id="ratingList" class="container"></div>
+    <button class="bulk-delete-btn" onclick="deleteSelectedRatings()">
+      🗑️ Xoá các đánh giá đã chọn
+    </button>
 
     <script>
-  const API_URL = 'https://couple-date-rating-2.onrender.com'; // Đổi sang domain backend khi deploy
-        const correctPassword = "05112005";
-  const userInput = prompt("Vui lòng nhập mật khẩu để vào trang admin:");
-  alert("Chào mừng bạn đến với trang quản lý đánh giá! 💖");
-  if (userInput !== correctPassword) {
-    alert("Bạn không có quyền truy cập!");
-    alert("Bạn sẽ được chuyển về trang chính.");
-    window.location.href = "index.html";
-  }
+      const API_URL = "http://localhost:4000";
+      const correctPassword = "05112005";
+      const userInput = prompt("Vui lòng nhập mật khẩu để vào trang admin:");
 
+      if (userInput === correctPassword) {
+        alert("Chào mừng bạn đến với trang quản lý đánh giá! 💖");
+      } else {
+        alert("Truy cập bị từ chối.");
+        window.location.href = "index.html";
+      }
 
       function fetchRatings() {
-        fetch(`${API_URL}/api/ratings`)
+        // Đặt ở đầu file JS
+        let isListView = false;
+
+        const sortOrder = document.getElementById("sortSelect").value;
+        const starFilter = document.getElementById("starFilter").value;
+        const onlyFavorite = document.getElementById("favoriteFilter")?.checked;
+        const list = document.getElementById("ratingList");
+
+        list.classList.toggle("list-view", isListView);
+        list.classList.toggle("grid-view", !isListView);
+
+        let url = `${API_URL}/api/ratings?order=${sortOrder}`;
+        if (starFilter) url += `&star=${starFilter}`;
+        if (onlyFavorite) url += `&favorite=true`;
+
+        fetch(url)
           .then((res) => res.json())
           .then((data) => {
             const list = document.getElementById("ratingList");
@@ -66,21 +199,27 @@
                   item.photo && item.photo.startsWith("data:image/")
                     ? item.photo
                     : null;
-                    
                 return `
-                
-          <div class="memory-item" style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-            <input type="checkbox" class="checkbox" data-id="${item.id}">
-            <strong>⭐ ${item.rating}</strong> – ${new Date().toLocaleString('vi-VN')}<br>
-            <em>${item.feeling}</em><br>
-            ${
-              safePhoto
-                ? `<img src="${safePhoto}" style="max-width: 200px; margin-top: 10px;" alt="Photo"><br>`
-                : '<span style="color: gray;">(Không có ảnh)</span><br>'
-            }
-            <button class="delete-btn" onclick="deleteRating(${item.id})">🗑️ Xóa đánh giá</button>
-          </div>
-        `;
+              <div class="memory-item">
+                <input type="checkbox" class="checkbox" data-id="${item.id}">
+                <strong>⭐ ${item.rating}</strong> – ${new Date(
+                  item.created_at
+                ).toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })}<br>
+                <em>${item.feeling}</em><br>
+                ${
+                  safePhoto
+                    ? `<img src="${safePhoto}" alt="Photo">`
+                    : '<span style="color: gray;">(Không có ảnh)</span><br>'
+                }<button onclick="toggleFavorite(${item.id}, ${
+                  item.is_favorite
+                })">
+  ${item.is_favorite ? "💔 Bỏ yêu thích" : "❤️ Yêu thích"}
+</button>
+
+                <button class="delete-btn" onclick="deleteRating(${
+                  item.id
+                })">🗑️ Xóa</button>
+              </div>`;
               })
               .join("");
           })
@@ -93,51 +232,58 @@
 
       function deleteRating(id) {
         if (confirm("Bạn có chắc muốn xoá đánh giá này không?")) {
-          fetch(`${API_URL}/api/ratings/${id}`, {
-            method: "DELETE",
-          })
+          fetch(`${API_URL}/api/ratings/${id}`, { method: "DELETE" })
             .then((res) => res.json())
-            .then((data) => {
-              alert(data.message || "Đã xóa đánh giá.");
-              fetchRatings();
-            })
-            .catch((err) => {
-              alert("Lỗi khi xoá đánh giá.");
-              console.error(err);
-            });
+            .then(() => fetchRatings())
+            .catch((err) => alert("Lỗi khi xoá đánh giá."));
         }
       }
 
       function deleteSelectedRatings() {
-        const checkboxes = document.querySelectorAll('.checkbox:checked');
-        if (checkboxes.length === 0) {
-          alert("Vui lòng chọn ít nhất một đánh giá để xoá.");
-          return;
-        }
-
-        if (!confirm(`Bạn có chắc muốn xoá ${checkboxes.length} đánh giá đã chọn không?`)) return;
-
-        const ids = Array.from(checkboxes).map(cb => cb.dataset.id);
-
-        // Xoá từng đánh giá tuần tự (hoặc có thể dùng Promise.all để xoá song song)
-        Promise.all(
-          ids.map(id =>
-            fetch(`${API_URL}/api/ratings/${id}`, {
-              method: "DELETE",
-            }).then(res => res.json())
+        const checkboxes = document.querySelectorAll(".checkbox:checked");
+        if (checkboxes.length === 0)
+          return alert("Vui lòng chọn ít nhất một đánh giá để xoá.");
+        if (
+          !confirm(
+            `Bạn có chắc muốn xoá ${checkboxes.length} đánh giá đã chọn không?`
           )
         )
-          .then(() => {
-            alert(`Đã xoá ${ids.length} đánh giá.`);
-            fetchRatings();
-          })
-          .catch((err) => {
-            alert("Có lỗi xảy ra khi xoá đánh giá.");
-            console.error(err);
-          });
+          return;
+
+        const ids = Array.from(checkboxes).map((cb) => cb.dataset.id);
+        Promise.all(
+          ids.map((id) =>
+            fetch(`${API_URL}/api/ratings/${id}`, { method: "DELETE" }).then(
+              (res) => res.json()
+            )
+          )
+        )
+          .then(() => fetchRatings())
+          .catch((err) => alert("Có lỗi xảy ra khi xoá đánh giá."));
       }
 
       fetchRatings();
+      function toggleFavorite(id, currentValue) {
+        fetch(`${API_URL}/api/ratings/${id}/favorite`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ is_favorite: !currentValue }),
+        })
+          .then((res) => res.json())
+          .then(() => fetchRatings())
+          .catch((err) => alert("Lỗi khi cập nhật yêu thích"));
+      }
+      let isListView = false;
+
+      function toggleViewMode() {
+        const container = document.getElementById("ratingList");
+        isListView = !isListView;
+        container.classList.toggle("list-view", isListView);
+        container.classList.toggle("grid-view", !isListView);
+        document.getElementById("toggleViewBtn").textContent = isListView
+          ? "🔁 Dạng ô lưới"
+          : "🔁 Dạng danh sách";
+      }
     </script>
   </body>
 </html>

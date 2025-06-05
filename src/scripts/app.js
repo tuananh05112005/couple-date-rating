@@ -225,6 +225,8 @@ function createConfetti() {
   }
 }
 
+
+
 // Khởi tạo: hiển thị kỷ niệm đã lưu
 displayMemories();
 // Nếu có kỷ niệm thì hiện section

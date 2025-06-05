@@ -39,13 +39,13 @@ app.post('/api/ratings', (req, res) => {
   });
 });
 
-// API: Lấy tất cả đánh giá
-app.get('/api/ratings', (req, res) => {
-  db.query('SELECT * FROM couple_rating ORDER BY created_at DESC', (err, results) => {
-    if (err) throw err;
-    res.json(results);
-  });
-});
+// // API: Lấy tất cả đánh giá
+// app.get('/api/ratings', (req, res) => {
+//   db.query('SELECT * FROM couple_rating ORDER BY created_at DESC', (err, results) => {
+//     if (err) throw err;
+//     res.json(results);
+//   });
+// });
 
 app.delete('/api/ratings/:id', (req, res) => {
   const sql = 'DELETE FROM couple_rating WHERE id = ?';
@@ -57,6 +57,59 @@ app.delete('/api/ratings/:id', (req, res) => {
     res.json({ message: 'Đánh giá đã được xóa!' });
   });
 });
+
+app.put('/api/ratings/:id/favorite', (req, res) => {
+  const id = req.params.id;
+  const { is_favorite } = req.body;
+
+  db.query(
+    'UPDATE couple_rating SET is_favorite = ? WHERE id = ?',
+    [is_favorite, id],
+    (err, result) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Lỗi khi cập nhật yêu thích' });
+      }
+      res.json({ message: 'Cập nhật thành công' });
+    }
+  );
+});
+
+ 
+// Backend - ratings route (e.g., routes/ratings.js or server.js)
+app.get('/api/ratings', (req, res) => {
+  const order = req.query.order === 'asc' ? 'ASC' : 'DESC';
+  const star = parseInt(req.query.star);
+  const favorite = req.query.favorite === 'true';
+
+  let sql = "SELECT * FROM couple_rating";
+  const params = [];
+  const conditions = [];
+
+  if (!isNaN(star)) {
+    conditions.push("rating = ?");
+    params.push(star);
+  }
+
+  if (favorite) {
+    conditions.push("is_favorite = true");
+  }
+
+  if (conditions.length > 0) {
+    sql += " WHERE " + conditions.join(" AND ");
+  }
+
+  sql += ` ORDER BY created_at ${order}`;
+
+  db.query(sql, params, (err, results) => {
+    if (err) {
+      console.error('Lỗi truy vấn:', err);
+      return res.status(500).json({ error: 'Lỗi máy chủ' });
+    }
+    res.json(results);
+  });
+});
+
 
 
 const PORT = 4000;
