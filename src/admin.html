@@ -1,189 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <title>Admin - Đánh Giá Tình Yêu 💌</title>
-    <link rel="stylesheet" href="styles/style.css" />
-    <style>
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #fff8fb;
-        margin: 0;
-        padding: 0;
-      }
-
-      h1 {
-        text-align: center;
-        color: #ff4081;
-        padding: 20px 0 10px;
-        font-size: 32px;
-      }
-
-      a {
-        display: block;
-        text-align: center;
-        margin-bottom: 10px;
-        color: #ff4081;
-        text-decoration: none;
-        font-weight: bold;
-      }
-
-      #sortControls {
-        text-align: center;
-        margin-bottom: 20px;
-      }
-
-      select {
-        padding: 6px 12px;
-        border-radius: 8px;
-        border: 1px solid #ffb6c1;
-        background-color: #fff0f5;
-        font-size: 14px;
-        margin: 0 8px;
-      }
-
-      .container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 20px;
-        padding: 0 20px 40px;
-      }
-
-      .memory-item {
-        background: #fff0f5;
-        border-radius: 12px;
-        box-shadow: 0 0 10px #ffd6e8;
-        padding: 15px;
-        transition: transform 0.3s ease;
-        position: relative;
-      }
-
-      .memory-item:hover {
-        transform: scale(1.02);
-      }
-
-      .checkbox {
-        transform: scale(1.2);
-        margin-right: 6px;
-      }
-
-      .delete-btn {
-        background-color: #ff4081;
-        color: white;
-        border: none;
-        border-radius: 10px;
-        padding: 5px 10px;
-        margin-top: 10px;
-        cursor: pointer;
-        width: 100%;
-      }
-
-      .delete-btn:hover {
-        background-color: #e60073;
-      }
-
-      .bulk-delete-btn {
-        background-color: #ff1744;
-        color: white;
-        border: none;
-        border-radius: 12px;
-        padding: 10px 20px;
-        margin: 20px auto 40px;
-        display: block;
-        font-size: 16px;
-        cursor: pointer;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      }
-
-      .bulk-delete-btn:hover {
-        background-color: #c4001d;
-      }
-
-      img {
-        width: 100%;
-        max-width: 160px;
-        height: auto;
-        border-radius: 10px;
-        margin-top: 10px;
-        object-fit: cover;
-        display: block;
-      }
-      .grid-view .memory-item {
-        display: block;
-      }
-
-      .list-view .memory-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 15px;
-      }
-
-      .list-view .memory-item img {
-        max-width: 120px;
-        height: auto;
-      }
-
-      .list-view .memory-item button {
-        margin-top: auto;
-      }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Đánh Giá Tình Yêu 💕</title>
+  <link rel="stylesheet" href="styles/admin.css" />
   </head>
-  <body>
-    <h1>📊 Quản lý đánh giá</h1>
-    <a href="index.html">← Về trang đánh giá</a>
 
-    <div id="sortControls">
-      <label for="sortSelect">Sắp xếp thời gian:</label>
-      <select id="sortSelect" onchange="fetchRatings()">
-        <option value="desc">Mới nhất</option>
-        <option value="asc">Cũ nhất</option>
-      </select>
-      <label for="starFilter">Lọc theo sao:</label>
-      <select id="starFilter" onchange="fetchRatings()">
-        <option value="">Tất cả</option>
-        <option value="5">⭐ 5</option>
-        <option value="4">⭐ 4</option>
-        <option value="3">⭐ 3</option>
-        <option value="2">⭐ 2</option>
-        <option value="1">⭐ 1</option>
-      </select>
-      <label>
-        <input type="checkbox" id="favoriteFilter" onchange="fetchRatings()" />
-        Chỉ hiển thị yêu thích 💖
-      </label>
-      <button id="toggleViewBtn" onclick="toggleViewMode()">
-        🔁 Tùy chỉnh giao diện
+  <body>
+    <div class="header-container">
+      <a href="index.html" class="back-link">💝 Về trang đánh giá</a>
+      <h1>💕 Kho kỷ niệm tình yêu của chúng mình 💕</h1>
+      
+      <div class="stats-bar" id="statsBar"></div>
+
+      <div class="control-panel">
+        <div class="control-group">
+          <label for="sortSelect">🔄 Sắp xếp:</label>
+          <select id="sortSelect" onchange="fetchRatings()">
+            <option value="desc">✨ Mới nhất</option>
+            <option value="asc">⏰ Cũ nhất</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="starFilter">⭐ Lọc theo sao:</label>
+          <select id="starFilter" onchange="fetchRatings()">
+            <option value="">💖 Tất cả</option>
+            <option value="5">⭐⭐⭐⭐⭐ 5 sao</option>
+            <option value="4">⭐⭐⭐⭐ 4 sao</option>
+            <option value="3">⭐⭐⭐ 3 sao</option>
+            <option value="2">⭐⭐ 2 sao</option>
+            <option value="1">⭐ 1 sao</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="favoriteFilter" onchange="fetchRatings()" />
+            <span>💗 Chỉ yêu thích</span>
+          </label>
+        </div>
+
+        <button class="toggle-view-btn" onclick="toggleViewMode()">
+          🔄 Chuyển sang bảng
+        </button>
+      </div>
+    </div>
+
+    <div class="main-container">
+      <div id="ratingList" class="container grid-view"></div>
+      <button class="bulk-delete-btn" onclick="deleteSelectedRatings()">
+        Xoá các kỷ niệm đã chọn
       </button>
     </div>
 
-    <div id="ratingList" class="container"></div>
-    <button class="bulk-delete-btn" onclick="deleteSelectedRatings()">
-      🗑️ Xoá các đánh giá đã chọn
-    </button>
+    <div id="imgModal" class="modal" onclick="closeModal()">
+      <span class="close">&times;</span>
+      <img class="modal-content" id="modalImg" onclick="event.stopPropagation()" />
+      <a id="downloadLink" class="download-btn" download onclick="event.stopPropagation()">⬇️ Tải ảnh xinh về máy nè</a>
+    </div>
 
     <script>
       const API_URL = "https://couple-date-rating-2.onrender.com";
-      const correctPassword = "05112005";
-      const userInput = prompt("Vui lòng nhập mật khẩu để vào trang admin:");
+      let isListView = false;
+      let allRatings = [];
 
-      if (userInput === correctPassword) {
-        alert("Chào mừng bạn đến với trang quản lý đánh giá! 💖");
-      } else {
-        alert("Truy cập bị từ chối.");
-        window.location.href = "index.html";
+      function updateStats(data) {
+        const total = data.length;
+        const favorites = data.filter(r => r.is_favorite).length;
+        const avgRating = total > 0 
+          ? (data.reduce((sum, r) => sum + r.rating, 0) / total).toFixed(1)
+          : 0;
+
+        document.getElementById('statsBar').innerHTML = `
+          <div class="stat-card">
+            <span class="stat-number">${total}</span>
+            <span class="stat-label">💕 Tổng kỷ niệm</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">${favorites}</span>
+            <span class="stat-label">💖 Yêu thích nhất</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">${avgRating} ⭐</span>
+            <span class="stat-label">🌟 Điểm trung bình</span>
+          </div>
+        `;
       }
 
       function fetchRatings() {
-        // Đặt ở đầu file JS
-        let isListView = false;
-
         const sortOrder = document.getElementById("sortSelect").value;
         const starFilter = document.getElementById("starFilter").value;
-        const onlyFavorite = document.getElementById("favoriteFilter")?.checked;
-        const list = document.getElementById("ratingList");
-
-        list.classList.toggle("list-view", isListView);
-        list.classList.toggle("grid-view", !isListView);
+        const onlyFavorite = document.getElementById("favoriteFilter").checked;
+        const container = document.getElementById("ratingList");
 
         let url = `${API_URL}/api/ratings?order=${sortOrder}`;
         if (starFilter) url += `&star=${starFilter}`;
@@ -192,98 +102,149 @@
         fetch(url)
           .then((res) => res.json())
           .then((data) => {
-            const list = document.getElementById("ratingList");
-            list.innerHTML = data
-              .map((item) => {
-                const safePhoto =
-                  item.photo && item.photo.startsWith("data:image/")
-                    ? item.photo
-                    : null;
-                return `
-              <div class="memory-item">
-                <input type="checkbox" class="checkbox" data-id="${item.id}">
-                <strong>⭐ ${item.rating}</strong> – ${new Date(
-                  item.created_at
-                ).toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })}<br>
-                <em>${item.feeling}</em><br>
-                ${
-                  safePhoto
-                    ? `<img src="${safePhoto}" alt="Photo">`
-                    : '<span style="color: gray;">(Không có ảnh)</span><br>'
-                }<button onclick="toggleFavorite(${item.id}, ${
-                  item.is_favorite
-                })">
-  ${item.is_favorite ? "💔 Bỏ yêu thích" : "❤️ Yêu thích"}
-</button>
+            allRatings = data;
+            updateStats(data);
 
-                <button class="delete-btn" onclick="deleteRating(${
-                  item.id
-                })">🗑️ Xóa</button>
-              </div>`;
-              })
-              .join("");
+            if (data.length === 0) {
+              container.innerHTML = `
+                <div class="empty-state">
+                  <div class="empty-state-icon">💝</div>
+                  <div class="empty-state-text">Chưa có kỷ niệm nào được lưu lại nè~ 🥺</div>
+                </div>
+              `;
+              return;
+            }
+
+            if (isListView) {
+              container.className = "container list-view";
+              container.innerHTML = `
+                <table>
+                  <thead>
+                    <tr>
+                      <th>💕 Chọn</th>
+                      <th>📸 Ảnh</th>
+                      <th>⭐ Sao</th>
+                      <th>💭 Cảm xúc</th>
+                      <th>📅 Ngày</th>
+                      <th>💖 Yêu thích</th>
+                      <th>🎯 Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${data.map((item) => {
+                      const safePhoto = item.photo && item.photo.startsWith("data:image/") ? item.photo : null;
+                      return `
+                        <tr>
+                          <td><input type="checkbox" class="checkbox" data-id="${item.id}"></td>
+                          <td>${safePhoto 
+                            ? `<img src="${safePhoto}" class="table-img" onclick="openModal('${safePhoto}')">`
+                            : '<span style="color: #ffb3d9;">💭 Không có ảnh</span>'
+                          }</td>
+                          <td><strong>⭐ ${item.rating}</strong></td>
+                          <td style="max-width: 300px; text-align: left; color: #666;">${item.feeling}</td>
+                          <td style="white-space: nowrap; color: #ff9ec4; font-weight: 600;">${new Date(item.created_at).toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })}</td>
+                          <td>
+                            <button class="table-favorite-btn" onclick="toggleFavorite(${item.id}, ${item.is_favorite})">${item.is_favorite ? "💖" : "🤍"}</button>
+                          </td>
+                          <td>
+                            <button class="table-delete-btn" onclick="deleteRating(${item.id})">🗑️ Xóa</button>
+                          </td>
+                        </tr>`;
+                    }).join("")}
+                  </tbody>
+                </table>`;
+            } else {
+              container.className = "container grid-view";
+              container.innerHTML = data.map((item) => {
+                const safePhoto = item.photo && item.photo.startsWith("data:image/") ? item.photo : null;
+                return `
+                  <div class="memory-item">
+                    <div class="memory-item-header">
+                      <input type="checkbox" class="checkbox" data-id="${item.id}">
+                      <span class="rating-badge">⭐ ${item.rating} sao</span>
+                    </div>
+                    <span class="date-badge">📅 ${new Date(item.created_at).toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })}</span>
+                    <div class="feeling-text">💭 ${item.feeling}</div>
+                    ${safePhoto 
+                      ? `<img src="${safePhoto}" onclick="openModal('${safePhoto}')" alt="Memory photo">`
+                      : '<div class="no-image">📷 Chưa có ảnh kỷ niệm</div>'
+                    }
+                    <div class="button-group">
+                      <button class="favorite-btn" onclick="toggleFavorite(${item.id}, ${item.is_favorite})">${item.is_favorite ? "💖 Đã yêu thích rồi nè" : "🤍 Thêm vào yêu thích"}</button>
+                      <button class="delete-btn" onclick="deleteRating(${item.id})">🗑️ Xóa đi</button>
+                    </div>
+                  </div>`;
+              }).join("");
+            }
           })
-          .catch((err) => {
-            document.getElementById("ratingList").textContent =
-              "Lỗi tải đánh giá.";
-            console.error(err);
+          .catch(err => {
+            console.error('Error:', err);
+            container.innerHTML = `
+              <div class="empty-state">
+                <div class="empty-state-icon">😢</div>
+                <div class="empty-state-text">Ôi không! Không thể tải dữ liệu được 💔</div>
+              </div>
+            `;
           });
       }
 
       function deleteRating(id) {
-        if (confirm("Bạn có chắc muốn xoá đánh giá này không?")) {
+        if (confirm("Bạn có chắc muốn xóa kỷ niệm này không? 🥺")) {
           fetch(`${API_URL}/api/ratings/${id}`, { method: "DELETE" })
-            .then((res) => res.json())
-            .then(() => fetchRatings())
-            .catch((err) => alert("Lỗi khi xoá đánh giá."));
+            .then(() => fetchRatings());
         }
       }
 
       function deleteSelectedRatings() {
         const checkboxes = document.querySelectorAll(".checkbox:checked");
-        if (checkboxes.length === 0)
-          return alert("Vui lòng chọn ít nhất một đánh giá để xoá.");
-        if (
-          !confirm(
-            `Bạn có chắc muốn xoá ${checkboxes.length} đánh giá đã chọn không?`
-          )
-        )
+        if (!checkboxes.length) {
+          alert("Chưa chọn kỷ niệm nào để xóa cả~ 💕");
           return;
-
+        }
+        if (!confirm(`Bạn có chắc muốn xóa ${checkboxes.length} kỷ niệm đã chọn không? 🥺💔`)) return;
+        
         const ids = Array.from(checkboxes).map((cb) => cb.dataset.id);
-        Promise.all(
-          ids.map((id) =>
-            fetch(`${API_URL}/api/ratings/${id}`, { method: "DELETE" }).then(
-              (res) => res.json()
-            )
-          )
-        )
-          .then(() => fetchRatings())
-          .catch((err) => alert("Có lỗi xảy ra khi xoá đánh giá."));
+        Promise.all(ids.map((id) => fetch(`${API_URL}/api/ratings/${id}`, { method: "DELETE" })))
+          .then(() => fetchRatings());
       }
 
-      fetchRatings();
-      function toggleFavorite(id, currentValue) {
+      function toggleFavorite(id, current) {
         fetch(`${API_URL}/api/ratings/${id}/favorite`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ is_favorite: !currentValue }),
-        })
-          .then((res) => res.json())
-          .then(() => fetchRatings())
-          .catch((err) => alert("Lỗi khi cập nhật yêu thích"));
+          body: JSON.stringify({ is_favorite: !current }),
+        }).then(() => fetchRatings());
       }
-      let isListView = false;
 
       function toggleViewMode() {
-        const container = document.getElementById("ratingList");
         isListView = !isListView;
-        container.classList.toggle("list-view", isListView);
-        container.classList.toggle("grid-view", !isListView);
-        document.getElementById("toggleViewBtn").textContent = isListView
-          ? "🔁 Dạng ô lưới"
-          : "🔁 Dạng danh sách";
+        document.querySelector(".toggle-view-btn").textContent = isListView
+          ? "🔄 Chuyển sang lưới"
+          : "🔄 Chuyển sang bảng";
+        fetchRatings();
       }
+
+      function openModal(src) {
+        const modal = document.getElementById("imgModal");
+        const img = document.getElementById("modalImg");
+        const link = document.getElementById("downloadLink");
+        modal.style.display = "block";
+        img.src = src;
+        link.href = src;
+      }
+
+      function closeModal() {
+        document.getElementById("imgModal").style.display = "none";
+      }
+
+      window.onclick = function(event) {
+        const modal = document.getElementById("imgModal");
+        if (event.target == modal) {
+          closeModal();
+        }
+      }
+
+      fetchRatings();
     </script>
   </body>
 </html>
